@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html scroll-behavior: smooth >
+    <head>
+        <style>
+        html {scroll-behavior: smooth; font-family: Arial, Helvetica, sans-serif;}
+        </style>
+        <meta charset="utf-8">
+        <title>SoME3</title>
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+<body>
+        <h3>What is a partial fraction decomposition and why should I care?</h3>
+        <p>
+        Partial fraction decomposition is a process that takes in the quotient of two polynomials and gives an equivalent form as the sum of terms with simple denominator. For example 
+        $$\frac{1}{1-x^2} = \frac{1}{2}\left(\frac{1}{x+1}-\frac{1}{x-1}\right)$$ Partial fraction decomposition is very important as it is the only way to integrate rational functions and it greatly simplifies taking their derivatives. Additionally partial fraction decomposition is required to take the inverse laplace transform of rational functions. It can even be used to solve differential equations.
+        The typical way of actually carrying out a partial fraction decomposition is to start with the general partial fraction decomposition and then solve for the coefficients. For example to calculate the decomposition of \(\frac{1}{1-x^2}\) you'd start by writing 
+        $$\frac{A}{x-1}+\frac{B}{x+1} = \frac{A(x+1)+B(x-1)}{x^2-1} = \frac{Ax+A+Bx-B}{x^2-1} $$ Then by equating coefficients we get a system of 2 equations 
+        $$A+B = 0$$ 
+        $$\text{and } A-B = -1$$. This strategy of starting with the most general possible decomposition and solving for the coefficients works but it suffers from being very slow and difficult to work with. Just the setup requires n(n-1) polynomial multiplications. Fortunately there is a better way which weirdly enough can involve complex integration. </p>
+        <h3>Complex calculus</h3>
+        <p>Pulling in complex numbers doesn't initially seem very helpful but there are two important properties of complex numbers that are relevant here. Firstly, complex numbers guarentee that the denominator can be factored fully whereas for example \(\frac{1}{1+x^2}\) cannot be factored over the real numbers. Secondly in the complex numbers a point where the function is undefined does not break up the domain into pieces. This is very important because the behavior of the function around some singularity a is dominated by the coefficient of \(\frac{1}{z-a}\) so the hope is that by analyzing the function near its singularities we can construct each term individually without being (directly) impacted by the other parts of the function.  </p>
+        <p>So what is calculus for complex numbers. As obvious as this may sound its basically the same as calculus for real numbers but now the numbers can be complex. For example the definition of the derivative is still 
+            $$f'(z_0) = \lim_{h\to 0} \frac{f(z_0+h)-f(z_0)}{h}$$ but now h can go to 0 on any path you can draw and the limit must be the same value. For example h could be \((a+bi)t\) or \(e^{-(1+i)t}\) or any other function that goes to 0. By choosing \(h=t\) and \(h=it\) we get a necessary condition for complex differentiability which is that</p>
+        <p>
+            $$\lim_{t \to 0} \frac{f(z_0+it)-f(z_0)}{it} \Bigg \rvert _{z_0} = \lim_{t \to 0} \frac{f(z_0+t)-f(z_0)}{t} \Bigg \rvert _{z_0}$$ By writing f(z) as a function \(\mathbb{R}^2 \to \mathbb{R}^2\)  \(f(x,y) = (u(x,y),v(x,y))\) where \(u(x,y) := \Re(f(x+iy)), v(x,y) := \Im(f(x+iy))\) this becomes 
+            $$\frac{\partial f}{\partial y} = i\frac{\partial f}{\partial{x}}, \text{so } \frac{\partial (u(x,y)+iv(x,y))}{\partial y} = i\frac{\partial (u(x,y)+iv(x,y))}{\partial{x}}$$ or as it's more commonly written 
+            $$\frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}, \frac{\partial v}{\partial y} = \frac{\partial u}{\partial x} $$ This set of differential equations is called the Cauchy Riemann equations and they are satisfied by most commonly encountered functions.
+        </p>
+        <p>
+            Now moving on to integration there are two properties that would be nice for a complex integral to have. Firstly, the definition of an integral as the limit of a Riemann sum and secondly, the fundamental theorem of calculus. In addition for it to be a good integral it needs to agree with the Riemann integral where applicable. There is one caveat to complex integration. While for two real numbers there is really only one path between them, for any two complex numbers there are an infinite number of different paths between them. The solution is that for complex integration you must, if necessary, specify the path that you choose to integrate on with some piecewise continuous differentiable function \(\gamma\) where \(\gamma(a) = z_0, \gamma(b)=z_n\). There is then a complex version of a Riemann sum given by 
+            $$\int_\gamma f(z) dz =\lim_{n\to \infty}\sum f(z_k)(z_k-z_{k-1}) = \lim_{n\to \infty} \sum f(\gamma(t_k))(\gamma(t_k)-\gamma(t_{k-1})) = \lim_{n\to \infty} \sum f(\gamma(t_k))\frac{\gamma(t_k)-\gamma(t_{k-1})}{t_k-t_{k-1}}(t_k-t_{k-1}) = \text{by the mean value theorem} \lim_{n\to \infty} \sum f(\gamma(t_k))\gamma'(c_k)(t_k-t_{k-1}) = \int_a^b f(\gamma(t))\gamma'(t) dt$$  Fortunately its often not actually necessary to specify the exact path. This is due to the somewhat surprising fact that if a function is holomorphic on some domain then the value of the integral doesn't change as you move the path through the domain. To prove this we can just use the Cauchy Riemann equations along with Greens theorem 
+            $$\oint_\gamma f(z) dz = \oint_\gamma (u(x,y)+iv(x,y))(dx+i dy) = \oint_\gamma u(x,y)+iv(x,y) dx -v(x,y)+iu(x,y)dy=\iint_\Sigma -(\frac{\partial v}{\partial x}+\frac{\partial u}{\partial y}) + i(\frac{\partial u }{\partial x}-\frac{\partial v}{\partial y})dx dy =\iint_\Sigma 0 dx dy = 0 $$ 
+        </p>
+        <p>Now we can actually compute some integrals over closed loops. Unfortunately almost all of these integrals are boring except for one that is extremely important. Right away  \(\forall n \in \mathbb{N}, z^n\) is holomorphic so \(\oint z^n dz = 0\). as for  negative n < -1 let \(\gamma(t) = e^{it}\) then \(\oint_\gamma z^n = \int_0^{2\pi} ie^{i(n+1)z} = 0\). On the other hand if n = -1 $$\oint_\gamma \frac{1}{z} dz = \int_0^{2\pi} \frac{1}{e^{iz}}ie^{iz} dt = \int_0^{2\pi} i dt = 2\pi i$$ This is the key to the particular trick here for partial fraction decomposition and really many tricks throughout complex analysis. Here's a desmos graph that actually implements complex integration</p>
+        <iframe src="https://www.desmos.com/calculator/5f6hl0w9dz?embed" width="600" height="600" style="border: 1px solid #ccc" frameborder=0></iframe>
+        <h3>What does this have to do with partial fractions.</h3>
+        <p>$$\text{let } \gamma_i \text{ be a simple closed curve around the ith root of Q(z), } z_i\text{ and no other roots. Then } \prod\frac{1}{z-z_i} = \sum \frac{a_i}{z-z_i}, \oint_\gamma \prod\frac{1}{z-z_i} dz = \oint_\gamma \sum \frac{a_i}{z-z_i} dz = i2\pi a_i$$ This would</p>
+        <h3>Existence and Uniqueness</h3>
+        <p>You may have noticed that partial fraction decomposition feels like </p>
+    </body>
