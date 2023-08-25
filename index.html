@@ -71,6 +71,19 @@
         </p>
         <h3>Existence and Uniqueness</h3>
         <p>You may have noticed that partial fraction decomposition feels very vector-y in that there some collection of objects together with addition and scaling. In addition \(\frac{P(x)}{Q(x)}\) where Q(x) is fixed also feels very vector-y. In fact both of these are examples of vector spaces which lets us reframe our problem in terms of linear algebra. Specifically finding a partial fraction decomposition is the same as representing a vector in the \(\frac{P(x)}{Q(x)}\) basis in terms of the "simple fraction" basis. It is very simple to get a matrix that converts from the simple fractions to the complicated fraction by just putting everything over a common denominator and expanding. If these vectors are linearly independent they span the whole space and thus partial fraction decomposition is both unique and exists for all P(x). Indeed it is true that \(\sum \frac{1}{x-x_i}\) spans the whole space and form a basis. The proof is actually a great exercise. If you just want the proof you can read <a href="http://www.m-hikari.com/imf/imf-2012/29-32-2012/cookIMF29-32-2012.pdf">this paper</a> but I encourage you to try and figure it out yourself. As a hint, a set of vectors is linearly independent iff \(\sum{a_i v_i} = 0 \implies a_i = 0\)  </p>
-        <h3></h3>
-        <p></p>
+        <h3>Challenge Problem</h3>
+        <p>This is a totally optional but very cool application of partial fractions. I will outline the process, then solve below. The process will basically be as follows.  First, using the same process as above develop a partial fraction decomposition of the cotangent function. Then, using the partial fraction decomposition, find a closed form for a particular infinite series. Then using particular values of that infinite series, solve the Basel problem.</p>
+        <p>For the first step use the fact that cotangent has poles at integer multiples of pi and calculate the residues around each pole. $$\oint_\gamma \frac{\cos(z)}{\sin(z)} dz = \int_0^{2\pi} i\varepsilon e^{it}\frac{\cos(\varepsilon e^{it}+n\pi)}{sin(n\pi+\varepsilon e^it)} dt = \int_0^{2\pi} \lim_{\varepsilon \to 0} \frac{i \varepsilon e^{it} cos(\varepsilon e^{it})}{\varepsilon sin(e^{it})} \frac{(-1)^n}{(-1)^n} dt = \int_0^{2\pi} i dt = 2\pi i$$ 
+            So the residue at any of the poles is 1. Thus
+            $$\cot(x) = \sum_{n=-\infty}^{\infty} \frac{1}{x-n \pi}$$
+            Now by combining  the positive and negative terms $$\frac{1}{x-n \pi} + \frac{1}{x+n \pi } =\frac{x+n\pi+x-n\pi}{x^{2}-n^{2}\pi^{2}} = \frac{2x}{x^{2}-n^{2}\pi^{2}} $$
+            $$\text{So} \cot(x) = \sum_{n=-\infty}^{\infty}\frac{1}{x+\pi n} = \frac{1}{x}+2x\sum_{n=1}^{\infty}\frac{1}{x^{2}-\left(n\pi\right)^{2}}$$ 
+            Now isolating the infinite series 
+            $$\frac{x \cot(x)-1}{2x^2} = \sum_{n=1}^{\infty}\frac{1}{x^{2}-\left(n\pi\right)^{2}} $$
+            Taking the limit as \(x\to 0 \)
+            $$\lim_{x \to 0} \frac{x \cot(x)-1}{2x^2} = \lim_{x \to 0} \frac{x \cos(x)-\sin(x)}{2x^2 \sin(x)} = \sum_{n=1}^{\infty}\frac{1}{-\left(n\pi\right)^{2}} $$
+            which we can use L'Hôpital's rule on to get 
+            $$\lim_{x \to 0} \frac{x \cos(x)-\sin(x)}{2x^2 \sin(x)} = \lim_{x \to 0} \frac{-x\sin(x)}{2x\left(2\sin\left(x\right)+x\cos\left(x\right)\right)} = \lim_{x \to 0} \frac{-\sin(x) - x\cos(x)}{\left(4-2x^2\right)\sin\left(x\right)+8x\cos\left(x\right)} = \lim_{x \to 0} \frac{x\sin(x)-2\cos(x)}{-2\left(6x\sin\left(x\right)+\left(x^2-6\right)\cos\left(x\right)\right)} = -\frac{1}{6} $$
+            Since $$\sum_{n=1}^{\infty}\frac{1}{-\left(n\pi\right)^{2}} = -\frac{1}{6} \: , \: \sum_{n=1}^{\infty}\frac{1}{n^{2}} = \frac{\pi^2}{6}$$
+        </p>
     </body>
